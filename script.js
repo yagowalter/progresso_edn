@@ -7,7 +7,7 @@ const kcs = [
     { title: "KC 208 - Vantagens da computação em nuvem", deadline: "expirado" },
     { title: "KC 6 – O que é a Amazon Web Services?", deadline: "expirado" },
     { title: "KC 7 – Fundamentos da definição de preço da AWS", deadline: "expirado" },
-    { title: "KC 8 – Visão geral da infraestrutura da AWS", deadline: " expirado" },
+    { title: "KC 8 – Visão geral da infraestrutura da AWS", deadline: "expirado" },
     { title: "KC 209 – Serviços e categorias da AWS", deadline: "expirado" },
     { title: "KC 9 – Modelo de responsabilidade compartilhada", deadline: "expirado" },
     { title: "KC 10 – Introdução ao Amazon S3", deadline: "08/12/2025" },
@@ -46,15 +46,14 @@ const kcs = [
     { title: "KC 204 - CERT - KC - Bancos de dados", deadline: "N/A" },
     { title: "KC 205 - CERT - KC - Cobrança e suporte", deadline: "N/A" },
     { title: "KC 206 - CERT - KC - Arquitetura em nuvem", deadline: "N/A" },
-    { title: "KC 207 - CERT - KC - Balanceamento - Dimensionamento - Monitoramento", deadline: "N/A" },
-
+    { title: "KC 207 - CERT - KC - Balanceamento - Dimensionamento - Monitoramento", deadline: "N/A" }
 ];
 
 const labs = [
     { title: "Lab 11 - Introdução ao Amazon EC2", deadline: "08/12/2025" },
     { title: "Lab 267 - Criar a sua VPC e iniciar um servidor Web", deadline: "08/12/2025" },
     { title: "Lab 279 - Introdução ao gerenciamento de identidade e acesso (IAM)", deadline: "08/12/2025" },
-    { title: "Lab 160 - Crie seu servidor de banco de dados e interaja com seu banco de dados usando um aplicativo", deadline: "N/A" },
+    { title: "Lab 160 - Crie seu servidor de banco de dados...", deadline: "N/A" },
     { title: "Lab 168 - Instalar e configurar a CLI da AWS", deadline: "N/A" },
     { title: "Lab 169 - Usar o AWS Systems Manager", deadline: "N/A" },
     { title: "Lab 170 - Criar um site no S3", deadline: "N/A" },
@@ -80,10 +79,9 @@ const labs = [
     { title: "Lab 190 - Automatização de implantações com o AWS CloudFormation", deadline: "N/A" },
     { title: "Lab 191 - Solucionar problemas de implantações do AWS CloudFormation", deadline: "N/A" },
     { title: "Lab 192 - [Desafio] CloudFormation", deadline: "N/A" },
-    { title: "Lab 316 - [AI] Amazon SageMaker - Training a machine-learning model", deadline: "N/A" },
+    { title: "Lab 316 - [AI] Amazon SageMaker - Training", deadline: "N/A" },
     { title: "Parabéns, você conseguiu passar pelo AWS Re/Start!", deadline: "N/A" }
 ];
-
 
 // ============================
 // RENDERIZAÇÃO DAS LISTAS
@@ -97,7 +95,6 @@ function carregar() {
     kcsDiv.innerHTML = "";
     labsDiv.innerHTML = "";
 
-    // KC's
     kcs.forEach((item, idx) => {
         const done = saved["kc_" + idx] === true;
 
@@ -113,7 +110,6 @@ function carregar() {
         kcsDiv.appendChild(div);
     });
 
-    // LABs
     labs.forEach((item, idx) => {
         const done = saved["lab_" + idx] === true;
 
@@ -144,7 +140,7 @@ function toggle(id) {
 }
 
 // ============================
-// BARRA DE PROGRESSO
+// BARRA DE PROGRESSO + PARABÉNS
 // ============================
 
 function atualizarProgresso() {
@@ -156,11 +152,58 @@ function atualizarProgresso() {
 
     document.getElementById("progress-bar").style.width = porcentagem + "%";
     document.getElementById("progressText").innerText = porcentagem + "%";
+
+    // ---- MENSAGEM DE PARABÉNS ----
+    const modal = document.getElementById("congratsModal");
+    const typingText = document.getElementById("typingText");
+    const closeBtn = document.getElementById("closeCongrats");
+
+    function typeWriter(text, element, speed = 50) {
+        element.innerHTML = "";
+        let i = 0;
+        function typing() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typing, speed);
+            }
+        }
+        typing();
+    }
+
+    if (concluidos === total && total > 0) {
+
+        // Impede de mostrar várias vezes se já abriu antes
+        if (!localStorage.getItem("allCompletedShown")) {
+
+            // Confete 🎉
+            confetti({
+                particleCount: 250,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+
+            // Mostra modal
+            modal.classList.add("show");
+
+            // Texto digitando
+            typeWriter("🎉Parabéns! Você concluiu tudo!🎉", typingText);
+
+            // Marca como exibido
+            localStorage.setItem("allCompletedShown", "yes");
+        }
+
+    } else {
+        modal.classList.remove("show");
+        localStorage.removeItem("allCompletedShown");
+    }
+
+    closeBtn.onclick = () => {
+        modal.classList.remove("show");
+    };
+
 }
 
-// ============================
-// RESET
-// ============================
 
 const themeToggle = document.getElementById("themeToggle");
 
@@ -168,16 +211,13 @@ function atualizarIconeTema() {
     const resetBtn = document.getElementById("resetBtn");
 
     if (document.body.classList.contains("dark")) {
-        themeToggle.src = "assets/img/sun.png";      // tema escuro → mostra sol
-        resetBtn.src = "assets/img/reiniciar_branco.png"; // ícone reset escuro
+        themeToggle.src = "assets/img/sun.png";
+        resetBtn.src = "assets/img/reiniciar_branco.png";
     } else {
-        themeToggle.src = "assets/img/moon.png";     // tema claro → mostra lua
-        resetBtn.src = "assets/img/reiniciar_preto.png"; // ícone reset claro
+        themeToggle.src = "assets/img/moon.png";
+        resetBtn.src = "assets/img/reiniciar_preto.png";
     }
 }
-
-
-
 
 themeToggle.onclick = () => {
     document.body.classList.toggle("dark");
@@ -185,12 +225,27 @@ themeToggle.onclick = () => {
     atualizarIconeTema();
 };
 
-// Carregar tema salvo
 if (localStorage.getItem("temaEscuro") === "true") {
     document.body.classList.add("dark");
 }
+
+// ---------------------------
+// RESET (botão)
+// ---------------------------
+const resetBtn = document.getElementById("resetBtn");
+if (resetBtn) {
+  resetBtn.onclick = () => {
+    // remove progresso e a flag que indica que a animação já foi mostrada
+    localStorage.removeItem("progress");
+    localStorage.removeItem("allCompletedShown");
+    // opcional: garante que o tema salvo não seja apagado aqui
+    // (se quiser também resetar tema, descomente abaixo)
+    // localStorage.removeItem("temaEscuro");
+
+    // recarrega a lista na UI
+    carregar();
+  };
+}
+
 atualizarIconeTema();
-
-// Inicializar
 carregar();
-

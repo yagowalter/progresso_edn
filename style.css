@@ -174,3 +174,95 @@ header {
         margin-bottom: 25px;
     }
 }
+
+
+/* ---------------- MENSAGEM DE PARABÉNS ---------------- */
+/* ---------------- MENSAGEM DE PARABÉNS ---------------- */
+/* MODAL */
+.congrats-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s;
+    z-index: 9999;
+}
+
+.congrats-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* CONTEÚDO DO MODAL */
+.congrats-content {
+    background: var(--card);
+    color: var(--text);
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    animation: pop .4s ease;
+    text-align: center;
+    border: 2px solid var(--accent);
+}
+
+@keyframes pop {
+    0% { transform: scale(.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* TEXTO DIGITANDO */
+.typing {
+    border-right: 3px solid var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* CERTIFICADO */
+.certificate {
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    color: var(--text);
+}
+
+/* Botão fechar */
+#closeCongrats {
+    margin-top: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+#closeCongrats:hover {
+    opacity: 0.8;
+}
+
+/* ----------- MODO ESCURO (AJUSTES) ----------- */
+body.dark .congrats-content {
+    background: var(--card);
+    color: var(--text);
+    border-color: var(--accent);
+}
+
+body.dark .certificate {
+    background: var(--card);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+body.dark .typing {
+    border-right-color: var(--accent);
+}
